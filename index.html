@@ -1,0 +1,91 @@
+<html>
+<head>
+    <title>Tai_Wan_Bao_Tu_DeepLearning_Digitalization</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <style>
+        html, body, #map {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        .coordinates {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background-color: white;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<script>
+
+    var map = L.map('map').setView([23.68, 120.35], 11);
+
+    // Base layer
+    L.tileLayer('https://gis.sinica.edu.tw/tileserver/file-exists.php?img=JM20K_1904-jpg-{z}-{x}-{y}', {
+        maxZoom: 18, 
+        attribution: 'Tiles &copy; <a href="https://gis.sinica.edu.tw/">GIS@Sinica</a>' 
+    }).addTo(map);
+
+    // Define a custom style for the GeoJSON layers
+    var customStyle = {
+        "color": "red", 
+        "weight": 2, 
+        "opacity": 1, 
+        "fillOpacity": 0.1 
+    };
+
+    // Load GeoJSON data from an external file
+    fetch('https://github.com/JAAAE/Utilizing-Deep-Learning-for-the-Digitalization-of-Historical-Built-up-Areas/blob/main/Result_1904%E6%97%A5%E6%B2%BB%E8%87%BA%E7%81%A3%E5%A0%A1%E5%9C%96(%E6%98%8E%E6%B2%BB%E7%89%88)-1-20000_4326.geojson')
+        .then(response => response.json())
+        .then(data => {
+            // Create a GeoJSON layer with custom style and add it to the map
+            L.geoJSON(data, {
+                style: customStyle, 
+                onEachFeature: function (feature, layer) {
+                    if (feature.properties && feature.properties.popupContent) {
+                        layer.bindPopup(feature.properties.popupContent);
+                    }
+                }
+            }).addTo(map);
+        })
+        .catch(error => {
+            console.error('Error loading GeoJSON:', error);
+        });
+
+    // Add scale control to the map
+    L.control.scale().addTo(map);
+
+    // Add the bottom layer with 0.3 opacity
+    fetch('https://raw.githubusercontent.com/JAAAE/Tai_Wan_Bao_Tu_DeepLearning_digilization/main/Yunlin_4326.geojson')
+        .then(response => response.json())
+        .then(data => {
+            // Create a GeoJSON layer with custom style and opacity and add it to the map
+            L.geoJSON(data, {
+                style: {
+                    "fillColor": "black",
+                    "color": "#3388ff", 
+                    "weight": 1, 
+                    "opacity": 0.5, 
+                    "fillOpacity": 0.1 
+                }
+            }).addTo(map);
+        })
+        .catch(error => {
+            console.error('Error loading GeoJSON:', error);
+        });
+
+</script>
+
+</body>
+</html>
