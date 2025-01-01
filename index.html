@@ -46,7 +46,7 @@
     };
 
     // Load GeoJSON data from an external file
-    fetch('https://github.com/JAAAE/Utilizing-Deep-Learning-for-the-Digitalization-of-Historical-Built-up-Areas/raw/refs/heads/main/Result_1904%E6%97%A5%E6%B2%BB%E8%87%BA%E7%81%A3%E5%A0%A1%E5%9C%96(%E6%98%8E%E6%B2%BB%E7%89%88)-1-20000_4326.geojson')
+    fetch('https://raw.githubusercontent.com/JAAAE/Utilizing-Deep-Learning-for-the-Digitalization-of-Historical-Built-up-Areas/refs/heads/main/1904%E6%97%A5%E6%B2%BB%E8%87%BA%E7%81%A3%E5%A0%A1%E5%9C%96(%E6%98%8E%E6%B2%BB%E7%89%88)-1-20000_WGS84_simplification.geojson')
         .then(response => response.json())
         .then(data => {
             // Create a GeoJSON layer with custom style and add it to the map
@@ -66,24 +66,7 @@
     // Add scale control to the map
     L.control.scale().addTo(map);
 
-    // Add the bottom layer with 0.3 opacity
-    fetch('https://raw.githubusercontent.com/JAAAE/Tai_Wan_Bao_Tu_DeepLearning_digilization/main/Yunlin_4326.geojson')
-        .then(response => response.json())
-        .then(data => {
-            // Create a GeoJSON layer with custom style and opacity and add it to the map
-            L.geoJSON(data, {
-                style: {
-                    "fillColor": "black",
-                    "color": "#3388ff", 
-                    "weight": 1, 
-                    "opacity": 0.5, 
-                    "fillOpacity": 0.1 
-                }
-            }).addTo(map);
-        })
-        .catch(error => {
-            console.error('Error loading GeoJSON:', error);
-        });
+
 
 </script>
 
